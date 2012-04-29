@@ -519,10 +519,10 @@ nuage.create_class({
     __module__: 'defer',
     __name__: 'DelayedCall',
     __static__ : {
-        __lt__: function(self, a, b) {
+        __lt__: function(cls, a, b) {
             return (a.time < b.time)
         },
-        __gt__: function(self, a, b) {
+        __gt__: function(cls, a, b) {
             return (a.time > b.time)
         }
     },

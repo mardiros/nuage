@@ -268,7 +268,7 @@ nuage.create_class({
 nuage.create_class({
     __module__:'nuage.tpl',
     __name__: 'SafeString',
-    __parent__:[nuage.tpl.SafeData,String],
+    __parent__:[nuage.tpl.SafeData, String],
 })
 
 
@@ -281,7 +281,7 @@ nuage.create_class({
 nuage.create_class({
     __module__:'nuage.tpl',
     __name__: 'EscapeString',
-    __parent__:[nuage.tpl.EscapeData,String]
+    __parent__:[nuage.tpl.EscapeData, String]
 })
 
 
