@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <script type="text/javascript" src="/src/core.js"></script>
+        <script type="text/javascript" src="/src/event.js"></script>
+        
+        <script type="text/javascript" src="/src/tpl.js"></script>
+        <script type="text/javascript" src="/src/tpl_context.js"></script>
+        <script type="text/javascript" src="/src/tpl_node.js"></script>
+        <script type="text/javascript" src="/src/tpl_loader.js"></script>
+        <script type="text/javascript" src="/src/tpl_smartif.js"></script>
+
+        <script type="text/javascript" src="/src/defer.js"></script>
+        <script type="text/javascript" src="/src/model.js"></script>
+        <script type="text/javascript" src="/src/view.js"></script>
+        <script type="text/javascript" src="/src/route.js"></script>
+
+        <script type="text/javascript" src="/src/unittest.js"></script>
+        
+        <script type="text/javascript" src="test_model.js"></script>
+    </head>
+<body>
+    <div id="header">
+            <h1>Unit test suite</h1>
+    </div>
+    <div id="body">
+            
+    </div>
+    <div id="footer">
+            
+    </div>
+
+
+    <script type="text/javascript">
+
+    route.register('unittest',unittest.TestView())
+
+    // default action
+    route.connect('',{'view':'unittest','action':'start'})
+    reactor.run()
+
+    </script>
+</body>
+</html>

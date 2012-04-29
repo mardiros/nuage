@@ -1,0 +1,25 @@
+/*
+
+*/
+
+html, body {
+    padding:0px;
+    margin:0px;
+}
+
+body {
+    font-family: "Courier New", Courier, monospace;
+    padding:10px;
+}
+
+hr {
+    clear:both;
+    visibility:hidden;
+}
+
+h1 {
+    font-family: DejaVu, Arial, sans-serif;
+    margin:0px;
+    padding:10px 0;
+    font-size: 1.2em;
+}

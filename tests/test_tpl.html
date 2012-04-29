@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <script type="text/javascript" src="/src/core.js"></script>
+        <script type="text/javascript" src="/src/event.js"></script>
+        
+        <script type="text/javascript" src="/src/tpl.js"></script>
+        <script type="text/javascript" src="/src/tpl_context.js"></script>
+        <script type="text/javascript" src="/src/tpl_node.js"></script>
+        <script type="text/javascript" src="/src/tpl_loader.js"></script>
+        <script type="text/javascript" src="/src/tpl_smartif.js"></script>
+
+        <script type="text/javascript" src="/src/defer.js"></script>
+        <script type="text/javascript" src="/src/model.js"></script>
+        <script type="text/javascript" src="/src/view.js"></script>
+        <script type="text/javascript" src="/src/route.js"></script>
+
+        <script type="text/javascript" src="/src/unittest.js"></script>
+        <script type="text/javascript" src="test_tpl.js"></script>
+
+    </head>
+    <body>
+        <div id="header">
+            <h1>Unit test suite</h1>
+        </div>
+        <div id="body">
+            
+        </div>
+        <div id="footer">
+            
+        </div>
+
+<script id="test_ok" type="text/html">ok</script>
+<script id="test_var_ok" type="text/html">{{ok}}</script>
+<script id="test_nestedvar_ok" type="text/html">{{ok.ok.ok}}</script>
+
+<script id="test_string_length" type="text/html">{{strvar|length}}</script>
+<script id="test_list_length" type="text/html">{{listvar|length}}</script>
+
+
+<script id="test_comment" type="text/html">{# comment before #}ok{# comment after #}</script>
+
+<script id="test_if_1" type="text/html">{% if 1 %}ok{% endif %}</script>
+<script id="test_if_0_else" type="text/html">{% if 0 %}no!{%else%}ok{% endif %}</script>
+<script id="test_if_var" type="text/html">{% if istrue %}ok{% endif %}</script>
+<script id="test_if_not_var" type="text/html">{% if not isfalse %}ok{% endif %}</script>
+<script id="test_if_var_gt" type="text/html">{% if var > 10 %}ok{% endif %}</script>
+<script id="test_if_var_eq_int" type="text/html">{% if var == 10 %}ok{% endif %}</script>
+<script id="test_if_var_eq_str" type="text/html">{% if var == 'abc' %}ok{% endif %}</script>
+<script id="test_if_var_undef" type="text/html">{% if varundef %}ko{%else%}ok{% endif %}</script>
+<script id="test_if_var_lt" type="text/html">{% if var < 10 %}ok{% endif %}</script>
+<script id="test_if_varlen_gt" type="text/html">{% if var|length > 2 %}ok{% endif %}</script>
+
+<script id="test_if_1_and_1" type="text/html">{% if 1 and 1%}ok{% endif %}</script>
+<script id="test_if_1_or_0" type="text/html">{% if 1 or 0 %}ok{% endif %}</script>
+
+
+<script id="test_for" type="text/html">{% for x in x_list %}{{x.ok}}{% endfor %}</script>
+<script id="test_for2" type="text/html">{% for y,z in x_list %}{{y}}{{z}}{% endfor %}</script>
+<script id="test_for_counter" type="text/html">{% for x in x_list %}{{forloop.counter}}{% endfor %}</script>
+<script id="test_for_counter0" type="text/html">{% for x in x_list %}{{forloop.counter0}}{% endfor %}</script>
+<script id="test_for_revcounter" type="text/html">{% for x in x_list %}{{forloop.revcounter}}{% endfor %}</script>
+<script id="test_for_revcounter0" type="text/html">{% for x in x_list %}{{forloop.revcounter0}}{% endfor %}</script>
+<script id="test_for_first" type="text/html">{% for x in x_list %}{% if forloop.first %}FIRST{% endif %}{{forloop.counter}}{% endfor %}</script>
+<script id="test_for_last" type="text/html">{% for x in x_list %}{{forloop.counter}}{% if forloop.last %}LAST{% endif %}{% endfor %}</script>
+<script id="test_for_nested" type="text/html">{% for x in x_list %}-{% for y in x.y_list %}"{{x.a}},{{y.a}}"{% endfor %}-{% endfor %}</script>
+<script id="test_for_nested_counter" type="text/html">{% for x in x_list %}-{% for y in x.y_list %}"{{forloop.parentloop.counter}},{{forloop.counter}}"{% endfor %}-{% endfor %}</script>
+
+<script id="test_include" type="text/html">[{% include "test_ok" %}]</script>
+<script id="test_include_var" type="text/html">[{% include tpl %}]</script>
+
+<script id="test_extends_parent" type="text/html">[{% block header %}head{%endblock%}-{% block body %}body{%endblock%}-{% block footer %}foot{%endblock%}]</script>
+<script id="test_extends" type="text/html">{% extends "test_extends_parent" %}{% block body %}override{%endblock%}</script>
+
+<script id="test_extends_nested_parent0" type="text/html">{% extends "test_extends_parent" %}{% block header %}[{% block header0 %}header0{%endblock%}]{%endblock%}</script>
+<script id="test_extends_nested_parent1" type="text/html">{% extends "test_extends_nested_parent0" %}{% block header0 %}header1{%endblock%}{% block body %}override1{%endblock%}{% block footer %}foot1{%endblock%}</script>
+<script id="test_extends_nested" type="text/html">{% extends "test_extends_nested_parent1" %}{% block body %}override2{%endblock%}</script>
+
+
+<script id="test_route_url" type="text/html">{{ route_url('ctrl',action='c') }}</script>
+<script id="test_route_url_with_var" type="text/html">{{ route_url('ctrl',action='c',id=mid) }}</script>
+
+<script id="test_super_parent" type="text/html">[{% block body %}super{% endblock %}]</script>
+<script id="test_super" type="text/html">{% extends "test_super_parent" %}{% block body %}before-{{ super() }}-after{% endblock %}</script>
+
+<script id="test_super_nested0" type="text/html">[{% block b0 %}b0_0{% endblock %}][{% block b1 %}b1_0{% endblock %}][{% block b2 %}b2_0{% endblock %}]</script>
+<script id="test_super_nested1" type="text/html">{% extends "test_super_nested0" %}{% block b1 %}{{ super() }}_1{% endblock %}</script>
+<script id="test_super_nested2" type="text/html">{% extends "test_super_nested1" %}{% block b1 %}{{ super() }}_2{% endblock %}{% block b2 %}{{ super() }}_2{% endblock %}</script>
+
+<script type="text/javascript">
+    nuage.TEMPLATE_DIRS = '/tests/templates/'
+
+    route.register('unittest',unittest.TestView())
+
+    // default action
+    route.connect('',{'view':'unittest','action':'start'})
+    // route for test route_render
+    route.connect('/{view}/{action}',{})
+    route.connect('/{view}/{action}/{id:[^\\n]+}',{})
+
+    reactor.run()
+</script>
+    </body>
+</html>
