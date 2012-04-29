@@ -21,7 +21,7 @@ HTTP_SRV := ${http_srv.${py_version}}
 
 .PHONY: help clean slim fat test html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
-all: slim html
+all: slim doc
 
 help:
 	@echo
@@ -107,6 +107,8 @@ test:
 
 clean:
 	-rm -rf $(BUILDDIR)/*
+
+doc: html
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
