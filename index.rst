@@ -12,6 +12,7 @@ Contents:
     :maxdepth: 2
 
     README
+    doc/usage/index
     doc/license
 
 

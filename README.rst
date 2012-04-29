@@ -29,3 +29,11 @@ Built Dependancies
 Nuage require make and yui compressor.
 The nuage test need python to start a simple static server.
 
+
+Status
+------
+
+Beta.
+
+The lib has been developped with firefox.
+It may be compatible with google chrome, and probably internet explorer >= 9.
