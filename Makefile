@@ -24,8 +24,10 @@ HTTP_SRV := ${http_srv.${py_version}}
 all: slim html
 
 help:
-	@echo "use `make'  to build the doc and the lib"
-	@echo "Please use \`make <target>' where <target> is one of"
+	@echo
+	@echo "use 'make'  to build the doc and the lib"
+	@echo
+	@echo "Also use \`make <target>' where <target> is one of"
 	@echo "  fat        to make a standalone nuage lib for development used"
 	@echo "  slim       to make a standalone nuage lib for production used"
 	@echo "  html       to make standalone HTML files"
