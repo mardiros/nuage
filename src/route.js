@@ -38,16 +38,14 @@ nuage.create_module({
         },
 
         redirect: function(data) {
-            window.location=route.render(data)
+            window.location = route.render(data)
         },
 
         parse_hash: function(hash) {
-            hash = hash || window.location.hash
             var m
             var maps = route._maps
             for (var i = 0, l = len(maps); i<l; i++) {
-                var croute = maps.get(i)
-                m = croute.match(hash)
+                m = maps.get(i).match(hash)
                 if (m) {
                     return m
                 }
@@ -56,6 +54,7 @@ nuage.create_module({
         },
 
         dispatch: function(hash) {
+            hash = hash || window.location.hash
             var m = route.parse_hash(hash)
             print('dispaching route ' + hash)
             if (m) {
