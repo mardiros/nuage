@@ -1748,8 +1748,8 @@ nuage.create_module({
             db._ms.set(class_.__db__,ms)
         },
 
-        get_model: function(schema,name) {
-            return db._ms.get(schema,dict()).get(name)
+        get_model: function(schema, name) {
+            return db._ms.get(schema, dict()).get(name)
         },
 
         find_by_id: function(class_,object_id) {
@@ -2011,55 +2011,15 @@ nuage.create_class({
                     else {
                         db.set(rv)
                     }
-                    var ref = db.find(schema.Field,{'reference':model_})
-                    for ( var i=0, l = len(ref); i < l; i++ ) {
-                        if ( data[ref.get(i).ref.name+'_list'] ) {
-                            var mn = ref.get(i).ref.name
-                            var kl = mn+'_list'
-                            for ( var k in data[kl] ) {
-                                data[kl][k][mn][ref.get(i)['ref'].split('.')[0]] = rv
-                                var class_ = db.get_model('schema',mn)
-                                self._construct(class_,data[kl][k][mn],true)
-                            }
-                        }
-                    }            
                     return rv
                 }
                 catch(ee) {
-                    //print('restconnector:',ee.message)
+                    print('restconnector:',ee.message)
                 }
             }
             catch(e) {
                 print(e.message)
             }
-        },
-
-        _load_schema: function(self, data) {
-            if ( data['object_id'] ) {
-                data['object_id'] = data['object_id']['$oid']
-            }
-            var s = schema.Schema(data)
-            for ( var m in data.model_list ) {
-                var md = data.model_list[m]['model']
-                if ( md['object_id'] ) {
-                    md['object_id'] = md['object_id']['$oid']
-                }
-                md['schema'] = s
-                var model = schema.Model(md)
-                for ( var f in md.field_list ) {
-                    var fd = md.field_list[f]['field']
-                    if ( fd['object_id'] ) {
-                        fd['object_id'] = fd['object_id']['$oid']
-                    }
-                    fd['model'] = model
-                    if (fd['reference']) {  
-                        id = fd['reference']["object_id"]["$oid"]
-                        fd['reference'] = db.find_by_id(schema.Model,id)
-                    }
-                    var field = schema.Field(fd)
-                }
-            }
-            return s
         },
 
         get: function(self, model, key, ref) {
@@ -2074,12 +2034,7 @@ nuage.create_class({
                         }
                     }
                 }
-                if ( model == schema.Schema ) {
-                    rv = self._load_schema(o[model.__table__])
-                }
-                else {
-                    rv = self._construct(model,o[model.__table__],false)
-                }
+                rv = self._construct(model,o[model.__table__],false)
                 return rv
             }
             var f = defer.HTTPClientFactory()
@@ -2091,7 +2046,7 @@ nuage.create_class({
                 var m = self.root + model.__db__ + '/' + model.__table__
             }
             reactor.connect_http({
-                    url: m + '/' + key + '.' + self.format,
+                    url: m + '/' + key,
                     method: 'get'
                     },f )
             return f.defer.add_callback(_parse)
@@ -2136,10 +2091,10 @@ nuage.create_class({
             }
             var f = defer.HTTPClientFactory()
             reactor.connect_http({
-                    url: m  + '.' + self.format,
+                    url: m,
                     method: 'get'},f )
             return f.defer.add_callback(_parse,ref
-                ).add_errback(function(failure) { print(failure.get_errormessage()) })
+                ).add_errback(function(failure) { print(failure.get_error_message()) })
         },
 
         rest_url: function(self, model) {
@@ -2197,7 +2152,7 @@ nuage.create_class({
 
         create: function(self, model) {
             model.validate() //throw an error if model is not valid
-            var url = self.rest_url(model)+ '.' + self.format
+            var url = self.rest_url(model)
             self.drop_ref(model)
             var data = db.get_serializer(self.format).serialize(model)
             var f = defer.HTTPClientFactory()
@@ -2216,7 +2171,7 @@ nuage.create_class({
             // throw an exc if model if invalid
             var data = db.get_serializer(self.format).serialize(model)
             var f = defer.HTTPClientFactory()
-            var url = self.rest_url(model)+ '.' + self.format
+            var url = self.rest_url(model)
             reactor.connect_http({
                 url: url,
                 method: 'put',
@@ -2780,19 +2735,19 @@ nuage.create_class({
         },
 
         validate: function(self) {
-            var e = db.ConstraintErrorlist()
+            var el = db.ConstraintErrorlist()
             var fields = self.__class__.__fields__
             for ( var k in fields ) {
                 var field = fields[k]
                 try {
-                    self.set(k,self[k])
+                    self.set(k, self[k])
                 }
-                catch(exc) {
-                    if ( isintance(exc,db.ConstraintError)) {
-                        e.append(exc)
+                catch(e) {
+                    if ( isintance(exc, db.ConstraintError)) {
+                        el.append(e)
                     }
                     else {
-                        throw exc
+                        throw e
                     }
                 }
             }
@@ -2955,16 +2910,14 @@ nuage.create_module({
         },
 
         redirect: function(data) {
-            window.location=route.render(data)
+            window.location = route.render(data)
         },
 
         parse_hash: function(hash) {
-            hash = hash || window.location.hash
             var m
             var maps = route._maps
             for (var i = 0, l = len(maps); i<l; i++) {
-                var croute = maps.get(i)
-                m = croute.match(hash)
+                m = maps.get(i).match(hash)
                 if (m) {
                     return m
                 }
@@ -2973,6 +2926,7 @@ nuage.create_module({
         },
 
         dispatch: function(hash) {
+            hash = hash || window.location.hash
             var m = route.parse_hash(hash)
             print('dispaching route ' + hash)
             if (m) {
@@ -3569,10 +3523,10 @@ nuage.create_class({
     __module__: 'defer',
     __name__: 'DelayedCall',
     __static__ : {
-        __lt__: function(self, a, b) {
+        __lt__: function(cls, a, b) {
             return (a.time < b.time)
         },
-        __gt__: function(self, a, b) {
+        __gt__: function(cls, a, b) {
             return (a.time > b.time)
         }
     },
@@ -4002,7 +3956,7 @@ nuage.create_class({
 nuage.create_class({
     __module__:'nuage.tpl',
     __name__: 'SafeString',
-    __parent__:[nuage.tpl.SafeData,String],
+    __parent__:[nuage.tpl.SafeData, String],
 })
 
 
@@ -4015,7 +3969,7 @@ nuage.create_class({
 nuage.create_class({
     __module__:'nuage.tpl',
     __name__: 'EscapeString',
-    __parent__:[nuage.tpl.EscapeData,String]
+    __parent__:[nuage.tpl.EscapeData, String]
 })
 
 
