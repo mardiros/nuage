@@ -1,0 +1,17 @@
+<fieldset>
+    <h4>{% block title %}{%endblock%}</h4>
+
+    {%block fieldset%}
+    {%endblock%}
+    
+    <hr/>
+    {%block buttons%}
+    <a href="{{route_url('todo', action='update')}}">
+        update
+    </a>
+    <a href="{{route_url('todo', action='list')}}">
+        cancel
+    </a>
+    {%endblock%}
+    </button>
+</fieldset>

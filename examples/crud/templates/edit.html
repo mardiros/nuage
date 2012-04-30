@@ -1,0 +1,10 @@
+{% extends "edit_layout.html" %}
+
+{% block title %}
+{{todo.label}}:
+{%endblock%}
+
+{%block fieldset%}
+    <input type="hidden" id="label" value="{{todo.label}}" />
+    <textarea id="description" cols="80" rows="8">{{todo.description}}</textarea>
+{%endblock%}

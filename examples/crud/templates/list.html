@@ -1,0 +1,11 @@
+<h4>{{ todo|length }} task in my TODO list</h4>
+<dl>
+{% for t in todo %}
+
+    <dt><a href="{{ route_url('todo', action='edit', id=t.label) }}">{{ t.label }}</a></dt>
+    <dt>{{ t.description }}</dt>
+
+{% endfor %}
+</dl>
+
+<a href="{{ route_url('todo', action='new') }}"> create a new task</a>

@@ -1,0 +1,20 @@
+{% extends "edit.html" %}
+
+{% block title %}
+ new task to do
+{%endblock%}
+
+{%block fieldset%}
+    Label: <input type="text" id="label" value="{{todo.label}}" /><br/>
+    {{super()}}
+{%endblock%}
+
+{%block buttons%}
+<a href="{{route_url('todo', action='create')}}">
+    create
+</a>
+
+<a href="{{route_url('todo', action='list')}}">
+    cancel
+</a>
+{%endblock%}
